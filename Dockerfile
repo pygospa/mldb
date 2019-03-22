@@ -3,7 +3,7 @@ FROM ruby:2.6-alpine
 # build-base		for gem compilation
 # postgresql-dev	for pg gem
 # nodejs+tzdata		for rails
-RUN apk add --no-cache --virutal build-base \
+RUN apk add --no-cache --virtual build-base \
 				 nodejs \
 				 postgresql-dev \
 				 tzdata
