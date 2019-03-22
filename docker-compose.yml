@@ -7,16 +7,14 @@ services:
       - postgres-data:/var/lib/postgresql/data
 
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    command: bundle exec rails s -p 3000 -b '0.0.0.0'
+    build: .
     volumes:
       - .:/srv/mldb
     ports:
       - "3000:3000"
     depends_on:
       - db
+    command: bundle exec rails s -p 3000 -b '0.0.0.0'
 
 volumes:
   postgres-data:

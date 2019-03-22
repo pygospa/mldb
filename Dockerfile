@@ -8,12 +8,10 @@ RUN apk add --no-cache build-base \
 		       postgresql-dev \
 		       tzdata
 
-RUN mkdir /srv/mldb
-
-COPY Gemfile Gemfile.lock /srv/mldb/
-
 WORKDIR /srv/mldb
+
+COPY Gemfile Gemfile.lock ./
 
 RUN bundle install
 
-COPY . /srv/mldb
+COPY . .
