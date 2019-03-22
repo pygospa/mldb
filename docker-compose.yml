@@ -16,6 +16,12 @@ services:
       - db
     command: bundle exec rails s -p 3000 -b '0.0.0.0'
 
+  guard:
+    build: .
+    volumes:
+      - .:/srv/mldb
+    command: bundle exec guard --no-bundler-warning --no-interactions
+
 volumes:
   postgres-data:
     driver: local
