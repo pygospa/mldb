@@ -22,8 +22,13 @@ services:
     build: .
     volumes:
       - .:/srv/mldb
+    depends_on:
+      - chrome
     command: bundle exec guard --no-bundler-warning --no-interactions
     tty: true
+
+  chrome:
+    image: selenium/standalone-chrome
 
 volumes:
   postgres-data:
