@@ -5,6 +5,8 @@ services:
     image: postgres:alpine
     volumes:
       - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
     tty: true
 
   app:
@@ -29,6 +31,8 @@ services:
 
   chrome:
     image: selenium/standalone-chrome
+    volumes:
+      - /dev/shm:/dev/shm
 
 volumes:
   postgres-data:
