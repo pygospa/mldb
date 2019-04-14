@@ -1,4 +1,4 @@
-guard :rspec, cmd: "bundle exec rspec" do
+guard :rspec, cmd: "bundle exec rspec", all_on_start: true, all_after_pass: true do
   require "guard/rspec/dsl"
   dsl = Guard::RSpec::Dsl.new(self)
 
@@ -27,12 +27,12 @@ guard :rspec, cmd: "bundle exec rspec" do
 
   # Rails config changes
   watch(rails.spec_helper)     { rspec.spec_dir }
-  watch(rails.routes)          { "#{rspec.spec_dir}/routing" }
-  watch(rails.app_controller)  { "#{rspec.spec_dir}/controllers" }
+  watch(rails.routes)          { ["#{rspec.spec_dir}/routing", "#{rspec.spec_dir}/requests"] }
+  watch(rails.app_controller)  { "#{rspec.spec_dir}/requests" }
 
   # Capybara features specs
-  watch(rails.view_dirs)     { |m| rspec.spec.call("features/#{m[1]}") }
-  watch(rails.layouts)       { |m| rspec.spec.call("features/#{m[1]}") }
+  watch(rails.view_dirs)     { |m| rspec.spec.call("system/#{m[1]}") }
+  watch(rails.layouts)       { |m| rspec.spec.call("system/#{m[1]}") }
 
   # Turnip features and steps
   watch(%r{^spec/acceptance/(.+)\.feature$})
