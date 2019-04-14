@@ -9,7 +9,7 @@ services:
       - "5432:5432"
     tty: true
 
-  app:
+  webapp:
     build: .
     volumes:
       - .:/srv/mldb
@@ -17,7 +17,22 @@ services:
       - "3000:3000"
     depends_on:
       - db
-    command: bundle exec rails s -p 3000 -b '0.0.0.0'
+    environment:
+      - RAILS_ENV=development
+    command: bundle exec rails s -p 3000 -b '0.0.0.0' --pid=tmp/pids/development.pid
+    tty: true
+
+  test:
+    build: .
+    volumes:
+      - .:/srv/mldb
+    ports:
+      - "3001:3001"
+    depends_on:
+      - db
+    environment:
+      - RAILS_ENV=test
+    command: bundle exec rails s -p 3001 -b '0.0.0.0' --pid=tmp/pids/test.pid
     tty: true
 
   guard:
@@ -25,7 +40,9 @@ services:
     volumes:
       - .:/srv/mldb
     depends_on:
+      - test
       - chrome
+      - db
     command: bundle exec guard --no-bundler-warning --no-interactions
     tty: true
 
@@ -33,6 +50,8 @@ services:
     image: selenium/standalone-chrome
     volumes:
       - /dev/shm:/dev/shm
+    ports:
+      - "4444:4444"
 
 volumes:
   postgres-data:
